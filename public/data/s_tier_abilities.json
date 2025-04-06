@@ -1,0 +1,262 @@
+[
+  {
+    "name": "Emperor of Hamkind",
+    "ability": {
+      "name": "The Emperor Protects",
+      "trigger": "onChancePerRound",
+      "chance": "0.25",
+      "effect": "dealAOE",
+      "area": 8,
+      "target": "army",
+      "value": 25.0,
+      "description": "chance per round to increase heal army +30 every round"
+    }
+  },
+  {
+    "name": "Lemming L. Johnson",
+    "ability": {
+      "name": "From The Shadows",
+      "trigger": "onChancePerRound",
+      "chance": "0.4",
+      "effect": "dealAOE",
+      "area": 1,
+      "target": "army",
+      "value": 1.0,
+      "description": "chance per round to increase army speed +1 every round"
+    }
+  },
+  {
+    "name": "Furgrim",
+    "ability": {
+      "name": "Darkness My Old Friend",
+      "trigger": "onStart",
+      "chance": "100",
+      "effect": "bonusVsAllegiance",
+      "area": 1,
+      "target": "good",
+      "value": 10.0,
+      "description": "army +10 damage when attacking allegiance:good"
+    }
+  },
+  {
+    "name": "Perty",
+    "ability": {
+      "name": "Iron Within",
+      "trigger": "onStart",
+      "chance": "100",
+      "effect": "bonusVsDefender",
+      "area": 1,
+      "target": "army",
+      "value": 15.0,
+      "description": "army does +15 damage against defending player"
+    }
+  },
+  {
+    "name": "Jerboa Khan",
+    "ability": {
+      "name": "Fire From The Sky",
+      "trigger": "onRandomRound",
+      "chance": "10-40",
+      "effect": "dealAOE",
+      "area": 8,
+      "target": "enemy",
+      "value": 30.0,
+      "description": "chance per game to deal +30 damage to enemy army"
+    }
+  },
+  {
+    "name": "Lemmy Rusk",
+    "ability": {
+      "name": "Executioner",
+      "trigger": "onStart",
+      "chance": "100",
+      "effect": "bonusVsTier",
+      "area": 1,
+      "target": "army",
+      "value": 10.0,
+      "description": "army does +10 damage when attacking S-tier"
+    }
+  },
+  {
+    "name": "Gerbil Dorn",
+    "ability": {
+      "name": "All Your Base Are Belong To Us",
+      "trigger": "onStart",
+      "chance": "100",
+      "effect": "bonusVsAttacker",
+      "area": 1,
+      "target": "army",
+      "value": 10.0,
+      "description": "army does +15 damage against attacking player"
+    }
+  },
+  {
+    "name": "Rupert Guineaman",
+    "ability": {
+      "name": "The Avenging Son",
+      "trigger": "onChancePerRound",
+      "chance": "0.25",
+      "effect": "dealAOE",
+      "area": 8,
+      "target": "army",
+      "value": 5.0,
+      "description": "chance per round to increase one random stat +5"
+    }
+  },
+  {
+    "name": "Vole'Kane",
+    "ability": {
+      "name": "Not Today",
+      "trigger": "onDeath",
+      "chance": "0.75",
+      "effect": "heal",
+      "area": 1,
+      "target": "self",
+      "value": 50.0,
+      "description": "chance upon death to gain 50 HP"
+    }
+  },
+  {
+    "name": "Corvus Corat",
+    "ability": {
+      "name": "Nevermore",
+      "trigger": "onDeath",
+      "chance": "0.75",
+      "effect": "dealAOE",
+      "area": 8,
+      "target": "enemy",
+      "value": 50.0,
+      "description": "chance upon death to deal 50 damage to enemy"
+    }
+  },
+  {
+    "name": "Furious Mouse",
+    "ability": {
+      "name": "Vengeance Is Mine",
+      "trigger": "onStart",
+      "chance": "100",
+      "effect": "bonusVsLegion",
+      "area": 1,
+      "target": "Emperor's Chosen",
+      "value": 15.0,
+      "description": "Does +15 damage when attacking legion:Emperor's Chosen"
+    }
+  },
+  {
+    "name": "Sanguinea",
+    "ability": {
+      "name": "Death From Above",
+      "trigger": "onChancePerRound",
+      "chance": "0.2",
+      "effect": "melee",
+      "area": 1,
+      "target": "self",
+      "value": 5.0,
+      "description": "chance per round to increase melee attack +5"
+    }
+  },
+  {
+    "name": "Hamus",
+    "ability": {
+      "name": "King Slayer",
+      "trigger": "onStart",
+      "chance": "100",
+      "effect": "bonusVsTier",
+      "area": 1,
+      "target": "s",
+      "value": 10.0,
+      "description": "Does +10 damage when attacking S-tier"
+    }
+  },
+  {
+    "name": "Mortamus Mouse",
+    "ability": {
+      "name": "Pestilence",
+      "trigger": "onHit",
+      "chance": "0.2",
+      "effect": "dealAOE",
+      "area": 2,
+      "target": "enemy",
+      "value": 5.0,
+      "description": "chance per hit to deal +5 damage to nearby enemy stacks"
+    }
+  },
+  {
+    "name": "Marmot the Red",
+    "ability": {
+      "name": "Be Gone",
+      "trigger": "onHit",
+      "chance": "0.2",
+      "effect": "reset",
+      "area": 8,
+      "target": "all",
+      "value": 0.0,
+      "description": "chance per hit to reset all player positions back to starting positions"
+    }
+  },
+  {
+    "name": "Angy",
+    "ability": {
+      "name": "Butcher Mode",
+      "trigger": "onHit",
+      "chance": "0.8",
+      "effect": "melee",
+      "area": 1,
+      "target": "self",
+      "value": 10.0,
+      "description": "chance per hit to increase melee attack +10"
+    }
+  },
+  {
+    "name": "Gnawgar",
+    "ability": {
+      "name": "Inspiring",
+      "trigger": "onRandomRound",
+      "chance": "10-40",
+      "effect": "dealAOE",
+      "area": 8,
+      "target": "army",
+      "value": 50.0,
+      "description": "chance per game to heal army +50"
+    }
+  },
+  {
+    "name": "Konrat the Cursed",
+    "ability": {
+      "name": "Punish The Weak",
+      "trigger": "onStart",
+      "chance": "100",
+      "effect": "bonusVsTier",
+      "area": 1,
+      "target": "b",
+      "value": 10.0,
+      "description": "Does +10 damage when attacking b-tier"
+    }
+  },
+  {
+    "name": "Omegy",
+    "ability": {
+      "name": "We Are Alphy",
+      "trigger": "onChancePerRound",
+      "chance": "0.3",
+      "effect": "dealAOE",
+      "area": 8,
+      "target": "enemy",
+      "value": 5.0,
+      "description": "chance per round to reduce enemy speed -2"
+    }
+  },
+  {
+    "name": "Alphy",
+    "ability": {
+      "name": "We Are Alphy",
+      "trigger": "onChancePerRound",
+      "chance": "0.3",
+      "effect": "dealAOE",
+      "area": 8,
+      "target": "enemy",
+      "value": 5.0,
+      "description": "chance per round to reduce enemy ranged attack -5"
+    }
+  }
+]
