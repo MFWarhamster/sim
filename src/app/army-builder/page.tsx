@@ -46,7 +46,7 @@ const ArmyBuilderPage = () => {
   const selectedArmy = armies[selectedArmyIndex];
   const stacks = stacksByArmy[selectedArmy] || [];
   const selectedStack = stacks[selectedStackIndex] || null;  
-  function addNewStack() {
+  const _addNewStack = ()  => {  // Placeholder for future implementation
     setStacksByArmy((prevStacksByArmy) => {
       const currentStacks: Stack[] = prevStacksByArmy[selectedArmy] || [];
 
@@ -57,7 +57,7 @@ const ArmyBuilderPage = () => {
         target: "Closest",
       };
 
-      const updatedStacks = {
+      const _updatedStacks = {  // Placeholder for future implementation
         ...prevStacksByArmy,
         [selectedArmy]: [...currentStacks, newStack]
       };

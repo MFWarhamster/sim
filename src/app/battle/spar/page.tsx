@@ -34,11 +34,8 @@ export default function SparBattlePage() {
   const [round, setRound] = useState(1);
   const [winner, setWinner] = useState<"attacker" | "defender" | null>(null);
   const [healedIds, setHealedIds] = useState<number[]>([]);
-  const LOCAL_STORAGE_KEY = "warhamster_army_data";
   const savedArmyData = localStorage.getItem("warhamster_army_data");
-  const armies = savedArmyData ? JSON.parse(savedArmyData).armies : [];
-  const stacksByArmy = savedArmyData ? JSON.parse(savedArmyData).stacksByArmy : {};  
-  const activeAbilities = armies[0]?.activeAbilities || {};
+  const _armies = savedArmyData ? JSON.parse(savedArmyData).armies : [];
 
   const processAbility = (
     unit: NFT,
@@ -194,9 +191,9 @@ export default function SparBattlePage() {
         const target = candidates[0];
         const range = Math.abs(unit.position - target.position);
 
-        let bonusDamage = 0;
+        const bonusDamage = 0;
         if (unit.bonusVsTier && target.tier === unit.bonusVsTier.tier) {
-          bonusDamage = unit.bonusVsTier.value;
+          const bonusDamage = unit.bonusVsTier.value;
           roundLog.push(`${unit.name} gains +${bonusDamage} vs ${target.tier}-Tier`);
         }
 

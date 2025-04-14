@@ -37,7 +37,7 @@ export default function ConquestPage() {
   return (
     <div className="p-6 text-white">
       <h1 className="text-3xl font-bold mb-4">🌎 Conquest Mode</h1>
-      <div className="mb-4">Your Army's Power Rating: {playerPower}</div>
+      <div>It&apos;sYour Army's Power Rating: {playerPower}</div>
       <ul>
         {worlds.map(world => (
           <li key={world.id} className="p-2 mb-2 border rounded bg-gray-800">

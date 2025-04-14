@@ -47,7 +47,7 @@ export default function ConquestBattlePage() {
 
   const [units, setUnits] = useState<NFT[]>([]);
   const [log, setLog] = useState<string[]>([]);
-  const [round, setRound] = useState(1);
+  const [_round, setRound] = useState(1);
   const [winner, setWinner] = useState<"attacker" | "defender" | null>(null);
   const [healedIds, setHealedIds] = useState<number[]>([]);
 
@@ -193,7 +193,7 @@ export default function ConquestBattlePage() {
       const activeArmyName = armies[0];
       const stacks = stacksByArmy[activeArmyName] || [];
 
-      const attackerUnits: NFT[] = stacks.flatMap((stack: any, idx: number) =>
+      const attackerUnits: NFT[] = stacks.flatMap((stack: any, _idx: number) =>
         stack.units.map((unit: NFT) => ({
           ...unit,
           position: 1,
@@ -203,14 +203,16 @@ export default function ConquestBattlePage() {
           targetCommand: stack.target || "Closest",
         }))
       );
-      const defenderUnits: NFT[] = selectedWorld.defenderArmy.map((unit, idx) => ({
-        ...unit,
-        position: 8,
-        side: "defender",
-        maxHp: unit.hp,
-        attackStance: "Melee",
-        targetCommand: "Closest",
-      }));
+      const defenderUnits: NFT[] = selectedWorld.defenderArmy.map(function (unit, _idx) {
+        return ({
+          ...unit,
+          position: 8,
+          side: "defender",
+          maxHp: unit.hp,
+          attackStance: "Melee",
+          targetCommand: "Closest",
+        });
+      });
 
       setUnits([...attackerUnits, ...defenderUnits]);
       setLog([`🟢 Ready for battle on ${selectedWorld.name}! Click 'BATTLE!' to begin.`]);
@@ -239,7 +241,7 @@ export default function ConquestBattlePage() {
 
         if (enemies.length === 0) continue;
 
-        let candidates = [...enemies];
+        const candidates = [...enemies];
         const dist = (a: NFT) => Math.abs(unit.position - a.position);
 
         if (unit.targetCommand === "Highest HP") {
