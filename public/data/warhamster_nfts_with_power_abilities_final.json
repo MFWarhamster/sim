@@ -23,8 +23,8 @@
       "target": "allies",
       "value": 10,
       "description": "Chance each round to heal all allies for 10 HP."
-}
-    },
+    }
+  },
   {
     "id": 2,
     "name": "Lemming L. Johnson",
@@ -44,11 +44,11 @@
       "name": "From The Shadows",
       "trigger": "onChancePerRound",
       "chance": "0.3",
-      "effect": "speedArmy",
-      "area": 2,
+      "effect": "healArmy",
+      "area": 3,
       "target": "allies",
-      "value": 2.0,
-      "description": "chance per round to increase army speed and melee +2 every round"
+      "value": 5,
+      "description": "chance each round to heal all allies for 5 HP."
     }
   },
   {
@@ -95,7 +95,7 @@
     "ability": {
       "name": "Iron Within",
       "trigger": "onChancePerRound",
-      "chance": "0.80",
+      "chance": "0.50",
       "effect": "healArmy",
       "area": 3,
       "target": "allies",
@@ -119,14 +119,13 @@
     "world": "Skarr",
     "powerRating": 160,
     "ability": {
-      "name": "Fire From The Sky",
+      "name": "Inspiring Radiance",
       "trigger": "onChancePerRound",
-      "chance": ".40",
-      "effect": "dealAOE",
-      "area": 8,
-      "target": "enemies",
-      "value": 10,
-      "description": "chance per game to deal +30 damage to enemy army"
+      "effect": "healArmy",
+      "target": "army",
+      "value": 30,
+      "chance": 0.05,
+      "description": "Chance to heal the entire army by 30 HP"
     }
   },
   {
@@ -171,14 +170,13 @@
     "world": "Luna",
     "powerRating": 160,
     "ability": {
-      "name": "All Your Base Are Belong To Us",
-      "trigger": "onStart",
-      "chance": "100",
-      "effect": "bonusVsAttacker",
-      "area": 1,
+      "name": "Inspiring Radiance",
+      "trigger": "onChancePerRound",
+      "effect": "healArmy",
       "target": "army",
-      "value": 10,
-      "description": "army does +15 damage against attacking player"
+      "value": 30,
+      "chance": 0.05,
+      "description": "Chance to heal the entire army by 30 HP"
     }
   },
   {
@@ -197,14 +195,13 @@
     "world": "Havengard",
     "powerRating": 160,
     "ability": {
-      "name": "The Avenging Son",
-      "trigger": "onStart",
-      "chance": ".20",
-      "effect": "dealAOE",
-      "area": 8,
-      "target": "enemy",
-      "value": 500,
-      "description": "chance per round to increase one random stat +5"
+      "name": "Inspiring Radiance",
+      "trigger": "onChancePerRound",
+      "effect": "healArmy",
+      "target": "army",
+      "value": 30,
+      "chance": 0.05,
+      "description": "Chance to heal the entire army by 30 HP"
     }
   },
   {
@@ -223,14 +220,13 @@
     "world": "Cinder Prime",
     "powerRating": 160,
     "ability": {
-      "name": "Not Today",
-      "trigger": "onStart",
-      "chance": "100",
-      "effect": "dealAOE",
-      "area": 8,
-      "target": "enemy",
-      "value": 50,
-      "description": "chance upon death to gain 50 HP"
+      "name": "Inspiring Radiance",
+      "trigger": "onChancePerRound",
+      "effect": "healArmy",
+      "target": "army",
+      "value": 30,
+      "chance": 0.05,
+      "description": "Chance to heal the entire army by 30 HP"
     }
   },
   {
@@ -251,7 +247,7 @@
     "ability": {
       "name": "Nevermore",
       "trigger": "onDeath",
-      "chance": "0.75",
+      "chance": "0.50",
       "effect": "dealAOE",
       "area": 8,
       "target": "enemy",
@@ -303,7 +299,7 @@
     "ability": {
       "name": "Death From Above",
       "trigger": "onChancePerRound",
-      "chance": "0.2",
+      "chance": "0.4",
       "effect": "melee",
       "area": 1,
       "target": "self",
@@ -353,14 +349,13 @@
     "world": "Psygoth",
     "powerRating": 160,
     "ability": {
-      "name": "Pestilence",
-      "trigger": "onHit",
-      "chance": "0.3",
+      "name": "Infested",
+      "trigger": "onChancePerRound",
       "effect": "dealAOE",
-      "area": 2,
       "target": "enemy",
-      "value": 5,
-      "description": "chance per hit to deal +5 damage to nearby enemy stacks"
+      "value": 25,
+      "chance": 0.05,
+      "description": "Chance to deal 25 AOE damage to the enemy army"
     }
   },
   {
@@ -405,14 +400,14 @@
     "world": "Enixus",
     "powerRating": 160,
     "ability": {
-      "name": "Butcher Mode",
-      "trigger": "onHit",
-      "chance": "0.5",
-      "effect": "melee",
-      "area": 1,
-      "target": "self",
-      "value": 5,
-      "description": "chance per hit to increase melee attack +10"
+      "name": "Warcry of Doom",
+      "trigger": "onChancePerRound",
+      "effect": "dealAOE",
+      "area": 2,
+      "target": "enemy",
+      "value": 25,
+      "chance": 0.25,
+      "description": "Chance to deal 25 AOE damage to the enemy army"
     }
   },
   {
@@ -428,12 +423,12 @@
     "ranged": 19,
     "allegiance": "Bad",
     "legion": "Word Breakers",
-    "world": "Belladoom",
+    "world": "We are risen",
     "powerRating": 160,
     "ability": {
       "name": "Inspiring",
-      "trigger": "onRandomRound",
-      "chance": "10-40",
+      "trigger": "onChancePerRound",
+      "chance": ".05",
       "effect": "healArmy",
       "area": 8,
       "target": "allies",
@@ -483,14 +478,14 @@
     "world": "Neptunia",
     "powerRating": 90,
     "ability": {
-      "name": "We Are Alphy",
+      "name": "Stabbed in the back",
       "trigger": "onChancePerRound",
       "chance": "0.2",
       "effect": "dealAOE",
       "area": 3,
       "target": "enemies",
-      "value": 2,
-      "description": "chance per round to reduce enemy speed -2"
+      "value": 3,
+      "description": "chance per round to wound the enemy"
     }
   },
   {
@@ -509,14 +504,14 @@
     "world": "Neptunia",
     "powerRating": 90,
     "ability": {
-      "name": "We Are Alphy",
+      "name": "Stabbed in the back",
       "trigger": "onChancePerRound",
       "chance": "0.2",
       "effect": "dealAOE",
       "area": 3,
       "target": "enemies",
-      "value": 2,
-      "description": "chance per round to reduce enemy ranged attack -2"
+      "value": 3,
+      "description": "chance per round to wound the enemy"
     }
   },
   {
@@ -525,7 +520,7 @@
     "tier": "A",
     "rank": "Chapter Master",
     "type": "Hero",
-    "cost": 6,
+    "cost": 5,
     "hp": 50,
     "speed": 3,
     "melee": 8,
@@ -533,7 +528,17 @@
     "allegiance": "Good",
     "legion": "Dark Avians",
     "world": "The Vale",
-    "powerRating": 62
+    "powerRating": 62,
+    "ability": {
+      "name": "Rally",
+      "trigger": "onChancePerRound",
+      "chance": ".05",
+      "effect": "healSelf",
+      "area": 1,
+      "target": "self",
+      "value": 30,
+      "description": "chance per round to heal"
+    }
   },
   {
     "id": 23,
@@ -541,7 +546,7 @@
     "tier": "A",
     "rank": "Captain",
     "type": "Hero",
-    "cost": 6,
+    "cost": 5,
     "hp": 50,
     "speed": 3,
     "melee": 7,
@@ -549,7 +554,17 @@
     "allegiance": "Good",
     "legion": "Dark Avians",
     "world": "The Vale",
-    "powerRating": 62
+    "powerRating": 62,
+    "ability": {
+      "name": "Inspire",
+      "trigger": "onChancePerRound",
+      "chance": ".05",
+      "effect": "healArmy",
+      "area": 6,
+      "target": "army",
+      "value": 10,
+      "description": "chance per round to heal"
+    }
   },
   {
     "id": 24,
@@ -557,7 +572,7 @@
     "tier": "A",
     "rank": "Lietenant",
     "type": "Hero",
-    "cost": 6,
+    "cost": 5,
     "hp": 50,
     "speed": 3,
     "melee": 10,
@@ -565,7 +580,17 @@
     "allegiance": "Good",
     "legion": "Dark Avians",
     "world": "The Vale",
-    "powerRating": 62
+    "powerRating": 62,
+    "ability": {
+      "name": "Warcry",
+      "trigger": "onChancePerRound",
+      "chance": ".05",
+      "effect": "dealAOE",
+      "area": 6,
+      "target": "enemy",
+      "value": 10,
+      "description": "chance per round to unleash hell"
+    }
   },
   {
     "id": 25,
@@ -573,7 +598,7 @@
     "tier": "A",
     "rank": "Lietenant",
     "type": "Hero",
-    "cost": 6,
+    "cost": 5,
     "hp": 55,
     "speed": 3,
     "melee": 5,
@@ -581,7 +606,17 @@
     "allegiance": "Good",
     "legion": "Dark Avians",
     "world": "The Vale",
-    "powerRating": 62
+    "powerRating": 62,
+    "ability": {
+      "name": "Apothecary",
+      "trigger": "onChancePerRound",
+      "chance": ".30",
+      "effect": "healArmy",
+      "area": 6,
+      "target": "army",
+      "value": 2,
+      "description": "chance per round to heal Brothers"
+    }
   },
   {
     "id": 26,
@@ -901,7 +936,17 @@
     "allegiance": "Bad",
     "legion": "Emperor's Chosen",
     "world": "Halucia",
-    "powerRating": 62
+    "powerRating": 62,
+    "ability": {
+      "name": "Apothecary",
+      "trigger": "onChancePerRound",
+      "chance": ".30",
+      "effect": "healArmy",
+      "area": 6,
+      "target": "army",
+      "value": 2,
+      "description": "chance per round to heal Brothers"
+    }
   },
   {
     "id": 46,
@@ -1221,7 +1266,17 @@
     "allegiance": "Bad",
     "legion": "Iron Wheels",
     "world": "Artemis 3",
-    "powerRating": 62
+    "powerRating": 62,
+    "ability": {
+      "name": "Apothecary",
+      "trigger": "onChancePerRound",
+      "chance": ".30",
+      "effect": "healArmy",
+      "area": 6,
+      "target": "army",
+      "value": 2,
+      "description": "chance per round to heal Brothers"
+    }
   },
   {
     "id": 66,
@@ -1493,7 +1548,16 @@
     "allegiance": "Good",
     "legion": "Imperial Paws",
     "world": "Luna",
-    "powerRating": 62
+    "powerRating": 62,
+    "ability": {
+      "name": "Rally",
+      "trigger": "onChancePerRound",
+      "effect": "healArmy",
+      "target": "army",
+      "value": 2,
+      "chance": 0.25,
+      "description": "Chance to heal his army by 2 HP"
+    }
   },
   {
     "id": 83,
@@ -1509,7 +1573,16 @@
     "allegiance": "Good",
     "legion": "Imperial Paws",
     "world": "Luna",
-    "powerRating": 62
+    "powerRating": 62,
+    "ability": {
+      "name": "Hold your ground",
+      "trigger": "onChancePerRound",
+      "effect": "healStack",
+      "target": "stack",
+      "value": 40,
+      "chance": 0.10,
+      "description": "Chance to heal his squad by 40 HP"
+    }
   },
   {
     "id": 84,
@@ -1525,7 +1598,16 @@
     "allegiance": "Good",
     "legion": "Imperial Paws",
     "world": "Luna",
-    "powerRating": 62
+    "powerRating": 62,
+    "ability": {
+      "name": "For the Emperor",
+      "trigger": "onChancePerRound",
+      "effect": "healStack",
+      "target": "stack",
+      "value": 100,
+      "chance": 0.03,
+      "description": "Small chance to heal his squad for 100"
+    }
   },
   {
     "id": 85,
@@ -1541,7 +1623,16 @@
     "allegiance": "Good",
     "legion": "Imperial Paws",
     "world": "Luna",
-    "powerRating": 62
+    "powerRating": 62,
+    "ability": {
+      "name": "Apothecary",
+      "trigger": "onChancePerRound",
+      "effect": "healStack",
+      "target": "stack",
+      "value": 20,
+      "chance": 0.25,
+      "description": "Chance to heal this stack by 20 HP"
+    }
   },
   {
     "id": 86,
@@ -1813,7 +1904,16 @@
     "allegiance": "Good",
     "legion": "White Claws",
     "world": "Skarr",
-    "powerRating": 62
+    "powerRating": 62,
+    "ability": {
+      "name": "Stack Mend",
+      "trigger": "onChancePerRound",
+      "effect": "healStack",
+      "target": "stack",
+      "value": 20,
+      "chance": 0.25,
+      "description": "Chance to heal this stack by 20 HP"
+    }
   },
   {
     "id": 103,
@@ -1829,7 +1929,16 @@
     "allegiance": "Good",
     "legion": "White Claws",
     "world": "Skarr",
-    "powerRating": 62
+    "powerRating": 62,
+    "ability": {
+      "name": "Stack Mend",
+      "trigger": "onChancePerRound",
+      "effect": "healStack",
+      "target": "stack",
+      "value": 20,
+      "chance": 0.25,
+      "description": "Chance to heal this stack by 20 HP"
+    }
   },
   {
     "id": 104,
@@ -1845,7 +1954,16 @@
     "allegiance": "Good",
     "legion": "White Claws",
     "world": "Skarr",
-    "powerRating": 62
+    "powerRating": 62,
+    "ability": {
+      "name": "Stack Mend",
+      "trigger": "onChancePerRound",
+      "effect": "healStack",
+      "target": "stack",
+      "value": 20,
+      "chance": 0.25,
+      "description": "Chance to heal this stack by 20 HP"
+    }
   },
   {
     "id": 105,
@@ -1861,7 +1979,16 @@
     "allegiance": "Good",
     "legion": "White Claws",
     "world": "Skarr",
-    "powerRating": 62
+    "powerRating": 62,
+    "ability": {
+      "name": "Stack Mend",
+      "trigger": "onChancePerRound",
+      "effect": "healStack",
+      "target": "stack",
+      "value": 20,
+      "chance": 0.25,
+      "description": "Chance to heal this stack by 20 HP"
+    }
   },
   {
     "id": 106,
