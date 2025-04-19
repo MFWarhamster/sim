@@ -44,6 +44,7 @@ const ArmyBuilderPage = () => {
   const [newArmyName, setNewArmyName] = useState("");
   const [newStackName, setNewStackName] = useState("");
   const selectedArmy = armies[selectedArmyIndex];
+  const allArmyUnits = stacksByArmy[selectedArmy]?.flatMap((stack) => stack.units) || [];
   const stacks = stacksByArmy[selectedArmy] || [];
   const selectedStack = stacks[selectedStackIndex] || null;  
   const _addNewStack = ()  => {  // Placeholder for future implementation
@@ -198,234 +199,256 @@ const ArmyBuilderPage = () => {
       },
       { hp: 0, melee: 0, ranged: 0, speed: 0, power: 0, cost: 0 }
     );
-    
+
     return (
       <div className="p-6 text-white">
-        <h1 className="text-3xl font-bold mb-2">Army Builder</h1>
-  
-        <div className="mb-2 p-4 bg-gray-900 rounded max-w-[512px]">
-          {editingArmyName ? (
-            <div className="flex space-x-2">
-              <input
-                className="text-white p-1 rounded"
-                value={newArmyName}
-                onChange={(e) => setNewArmyName(e.target.value)}
-              />
-              <button onClick={updateArmyName} className="bg-blue-600 px-2 py-1 rounded">Save</button>
-            </div>
-          ) : (
-            <h2
-              className="text-xl font-semibold cursor-pointer"
-              onDoubleClick={() => {
-                setNewArmyName(selectedArmy);
-                setEditingArmyName(true);
-              }}
-            >
-              {selectedArmy}
-            </h2>
-          )}
-        </div>
-
-      {/* Army Tabs */}
-      <div className="flex space-x-2 mb-2 bg-gray-900 shadow-lg p-2">
-        {armies.map((army, i) => (
-          <button
-            key={i}
-            onClick={() => {
-              setSelectedArmyIndex(i);
-              setSelectedStackIndex(0);
-            }}
-            className={`px-4 py-2 rounded hover: cursor-pointer ${
-              i === selectedArmyIndex ? "bg-purple-600" : "bg-gray-700"
-            }`}
-          >
-            {army}
-          </button>
-        ))}
-        <button
-          onClick={() => {
-            const newName = `Army ${armies.length + 1}`;
-            setArmies([...armies, newName]);
-            setStacksByArmy({
-              ...stacksByArmy,
-              [newName]: [{ 
-                name: "Stack 1", 
-                units: [],
-                stance: "Melee",         // default stance
-                target: "Closest"        // default target
-              }]
-            });
-            
-            setSelectedArmyIndex(armies.length);
-            setSelectedStackIndex(0);
-          }}
-          className="bg-green-500 px-4 py-2 rounded hover: cursor-pointer"
-        >
-          + Army
-        </button>
-        <div>
-          <p><span className="text-yellow-400"><strong>POWER:</strong></span> <strong>HP:</strong> {armyStats.hp} | <strong>Melee:</strong> {armyStats.melee} | <strong>Ranged:</strong> {armyStats.ranged} | <strong>Speed:</strong> {armyStats.speed} | <strong>Cost:</strong> {armyStats.cost}</p>
-          <p><span className="text-yellow-400"><strong>POWER RATING:</strong></span> {armyStats.hp + armyStats.melee + armyStats.ranged + armyStats.speed - armyStats.cost}</p>
-        </div>
-      </div>
-
-      {/* Main Panels */}
-      <div className="grid grid-cols-2 gap-8 border bg-gray-900 rounded p-4">
-        {/* Available Units */}
-        <div>
-          <h2 className="text-xl font-semibold mb-2">Available Units</h2>
-          <div className="flex space-x-2 mb-4">
-            {Object.keys(filters).map((key) => (
-              <button
-                key={key}
-                onClick={() => toggleFilter(key as keyof typeof filters)}
-                className={`px-6 py-1 shadow-lg rounded hover: cursor-pointer ${
-                  filters[key as keyof typeof filters] ? "bg-green-600" : "bg-gray-600"
-                }`}
-              >
-                {key}
-              </button>
-            ))}
-          </div>
-
-          <div className="space-y-2 max-h-[600px] overflow-y-auto border rounded">
-            {filteredNFTs.map((nft) => (
-              <div
-                key={nft.id}
-                className="relative bg-gray-800 p-2 group"
-                onMouseEnter={() => setHoveredNFT(nft)}
-                onMouseLeave={() => setHoveredNFT(null)}
-              >
-                <div className="text-sm font-semibold">{nft.name}</div>
-                <div className="text-xs">Tier {nft.tier} | Cost {nft.cost} | {nft.legion}</div>
+        <h1 className="text-5xl font-bold mb-2 flex justify-center text-shadow-lg/30 font-[Open_Sans]">ARMY BUILDER</h1>
+    
+        <div className="grid grid-cols-1 lg:grid-cols-3 border border-gray-800 gap-6 shadow-lg shadow-black bg-gray-900 rounded-2xl p-4">
+    
+          {/* 1. Available Units */}
+          <div className="bg-gray-800 border border-gray-700 rounded-2xl px-4">
+            <h2 className="text-xl flex justify-center font-semibold p-4 text-shadow-lg/30 font-[Open_Sans]">AVAILABLE NFT</h2>
+            <div className="flex space-x-3 mb-2">
+              {Object.keys(filters).map((key) => (
                 <button
-                  onClick={() => addUnitToStack(nft)}
-                  className="absolute top-2 right-2 bg-green-600 px-2 py-1 text-xs rounded hover:bg-gray-100 cursor-pointer"
+                  key={key}
+                  onClick={() => toggleFilter(key as keyof typeof filters)}
+                  className={`px-5 py-1 shadow-lg rounded ${
+                    filters[key as keyof typeof filters] ? "font-[Open_Sans] bg-green-600 hover:bg-green-500 hover: cursor-pointer" : "bg-gray-600 hover:bg-gray-500 hover: cursor-pointer"
+                  }`}
                 >
-                  Add
+                  {key}
                 </button>
+              ))}
+            </div>
+    
+            <div className="bg-gray-700 space-y-2 max-h-[480px] overflow-y-auto rounded px-2 mb-4">
+              {filteredNFTs.map((nft) => (
+                <div
+                  key={nft.id}
+                  className="relative bg-gray-900 p-2 group shadow-sm rounded shadow-black mt-2 mb-2"
+                  onMouseEnter={() => setHoveredNFT(nft)}
+                  onMouseLeave={() => setHoveredNFT(null)}
+                >
+                  <div className="text-sm font-semibold font-[Open_Sans]">{nft.name}</div>
+                  <div className="text-xs">Tier {nft.tier} | Cost {nft.cost} | {nft.legion}</div>
+                  <button
+                    onClick={() => addUnitToStack(nft)}
+                    className="font-[Open_Sans] absolute top-2 right-2 bg-green-600 px-2 py-1 text-xs rounded hover:bg-green-800 cursor-pointer"
+                  >
+                    Add
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+    
+          {/* 2. Stack Builder */}
+          <div className="bg-gray-800 p-4 border border-gray-700 rounded-2xl">
+            <h2 className="text-xl font-semibold mb-4 flex justify-center text-shadow-lg/30 font-[Open_Sans]">STACK BUILDER</h2>
+            <div className="flex space-x-4 mb-4 justify-center">
+              {stacks.map((stack, i) =>
+                editingStackIndex === i ? (
+                  <div key={i} className="flex space-x-4">
+                    <input
+                      className="text-white p-1 rounded"
+                      value={newStackName}
+                      onChange={(e) => setNewStackName(e.target.value)}
+                    />
+                    <button
+                      onClick={() => {
+                        const updatedStacks = [...stacks];
+                        updatedStacks[i].name = newStackName;
+                        setStacksByArmy({ ...stacksByArmy, [selectedArmy]: updatedStacks });
+                        setEditingStackIndex(null);
+                        saveToLocalStorage();
+                      }}
+                      className="bg-blue-600 px-2 py-1 rounded"
+                    >
+                      Save
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    key={i}
+                    onClick={() => setSelectedStackIndex(i)}
+                    onDoubleClick={() => {
+                      setEditingStackIndex(i);
+                      setNewStackName(stack.name);
+                    }}
+                    className={`px-4 py-2 shadow-lg rounded ${
+                      i === selectedStackIndex ? "font-[Open_Sans] bg-purple-600 border border-purple-600 hover:bg-purple-500 hover: cursor-pointer" : "bg-gray-700 hover:bg-gray-600 hover: cursor-pointer border border-gray-600"
+                    }`}
+                  >
+                    {stack.name}
+                  </button>
+                )
+              )}
+            </div>
+    
+            <h2 className="text-xl font-semibold mb-2 font-[Open_Sans]">Selected Stack</h2>
+            {bonusMultiplier > 0 && (
+              <p className="text-green-500 font-semibold font-[Open_Sans]">
+                Moral Bonus: <span className="text-green-350">+{(bonusMultiplier * 100).toFixed(0)}%</span>
+              </p>
+            )}
+            <p><strong>HP:</strong> {baseStats.hp} + <span className="text-green-400">{bonusStats.hp}</span></p>
+            <p><strong>Melee:</strong> {baseStats.melee} + <span className="text-green-400">{bonusStats.melee}</span></p>
+            <p><strong>Ranged:</strong> {baseStats.ranged} + <span className="text-green-400">{bonusStats.ranged}</span></p>
+            <p><strong>Speed:</strong> {baseStats.speed}</p>
+            <p><strong>Cost:</strong> {baseStats.cost}</p>
+            <p><span className="text-yellow-400 font-bold font-[Open_Sans]">POWER:</span> {powerRating}</p>
+    
+            <div className="mt-4 space-y-1 font-[Open_Sans]">
+              {selectedStack.units.map((nft, i) => (
+                <div key={i} className="flex justify-between items-center text-yellow-300">
+                  <p>{nft.name} ({nft.tier}-Tier)</p>
+                  <button
+                    onClick={() => {
+                      const updatedUnits = selectedStack.units.filter((_, index) => index !== i);
+                      const newStacks = [...stacks];
+                      newStacks[selectedStackIndex] = { ...selectedStack, units: updatedUnits };
+                      setStacksByArmy({ ...stacksByArmy, [selectedArmy]: newStacks });
+                      saveToLocalStorage();
+                    }}
+                    className="ml-4 bg-red-900 px-2 hover:bg-red-600 hover: cursor-pointer rounded border border-red-700 text-white shadow-lg font-[Open_Sans]"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+            </div>
+    
+            <div className="mt-4">
+              <label className="mr-2 font-[Open_Sans]">Stance:</label>
+              <select
+                className="text-green-400 hover:cursor-pointer"
+                value={selectedStack.stance || "Melee"}
+                onChange={(e) => updateStackOption("stance", e.target.value)}
+              >
+                <option value="Melee">Melee</option>
+                <option value="Ranged">Ranged</option>
+              </select>
+    
+              <label className="ml-4 mr-2 font-[Open_Sans]">Target:</label>
+              <select
+                className="text-green-400 hover:cursor-pointer"
+                value={selectedStack.target || "Closest"}
+                onChange={(e) => updateStackOption("target", e.target.value)}
+              >
+                <option value="Closest">Closest</option>
+                <option value="Highest HP">Highest HP</option>
+                <option value="Lowest HP">Lowest HP</option>
+                <option value="Highest Attack">Highest Attack</option>
+                <option value="Highest Speed">Highest Speed</option>
+              </select>
+            </div>
+    
+            <div className="mt-4 font-[Open_Sans]">
+              <p>Capacity: {totalStats.cost}/20</p>
+              <div className="h-4 w-full bg-gray-600 rounded">
+                <div
+                  className="h-4 bg-green-500 rounded shadow-lg shadow-green-400/50"
+                  style={{ width: `${(totalStats.cost / 20) * 100}%` }}
+                />
+              </div>
+            </div>
+          </div>
+    
+          {/* 3. Army Review */}
+          <div className="bg-gray-800 max-h-[600px] p-4 border border-gray-700 rounded-2xl space-y-4">
+            <h1 className="text-xl font-bold mb-2 flex justify-center text-shadow-lg/30 font-[Open_Sans]">ARMY REVIEW</h1>
+    
+            {/* Army Tabs */}
+            <div className="flex space-x-2 mb-4 border-b-2 border-purple-600">
+              {armies.map((army, i) => (
+                <button
+                  key={i}
+                  onClick={() => {
+                    setSelectedArmyIndex(i);
+                    setSelectedStackIndex(0);
+                  }}
+                  className={`w-full px-4 rounded-t-lg py-2 ${
+                    i === selectedArmyIndex ? "bg-purple-600 hover:bg-purple-500 hover: cursor-pointer" : "bg-gray-700"
+                  }`}
+                >
+                  {army}
+                </button>
+              ))}
+              <button
+                onClick={() => {
+                  const newName = `Army ${armies.length + 1}`;
+                  setArmies([...armies, newName]);
+                  setStacksByArmy({
+                    ...stacksByArmy,
+                    [newName]: [{
+                      name: "Stack 1",
+                      units: [],
+                      stance: "Melee",
+                      target: "Closest"
+                    }]
+                  });
+                  setSelectedArmyIndex(armies.length);
+                  setSelectedStackIndex(0);
+                }}
+                className="w-full bg-green-600 hover:bg-green-500 hover: cursor-pointer px-4 py-2 rounded-t-lg"
+              >
+                + Army
+              </button>
+            </div>
+    
+            {/* Rename + Stats */}
+            {editingArmyName ? (
+              <div className="flex space-x-2">
+                <input
+                  className="text-white p-1"
+                  value={newArmyName}
+                  onChange={(e) => setNewArmyName(e.target.value)}
+                />
+                <button onClick={updateArmyName} className="bg-blue-600 px-2 py-1 rounded">Save</button>
+              </div>
+            ) : (
+              <h2
+                className="text-xl font-semibold cursor-pointer font-[Open_Sans]"
+                onDoubleClick={() => {
+                  setNewArmyName(selectedArmy);
+                  setEditingArmyName(true);
+                }}
+              >
+                {selectedArmy}
+              </h2>
+            )}
+    
+            <div className="text-sm text-white mt-4 font-[Open_Sans]">
+              <p><span className="text-purple-400 font-bold font-[Open_Sans]">Stats</span></p>
+              <p><strong>HP:</strong> {armyStats.hp}</p>
+              <p><strong>Melee:</strong> {armyStats.melee}</p>
+              <p><strong>Ranged:</strong> {armyStats.ranged}</p>
+              <p><strong>Speed:</strong> {armyStats.speed}</p>
+              <p><strong>Cost:</strong> {armyStats.cost}</p>
+              <p><span className="text-yellow-400 font-bold font-[Open_Sans]">POWER:</span> {armyStats.hp + armyStats.melee + armyStats.ranged + armyStats.speed - armyStats.cost}</p>
+            </div>
+    
+            {stacksByArmy[selectedArmy]?.map((stack, stackIndex) => (
+              <div key={stackIndex} className="mb-2">
+                <h4 className="text-purple-300 font-semibold text-sm mb-1 font-[Open_Sans]">{stack.name}</h4>
+                {stack.units.length === 0 ? (
+                  <p className="text-gray-400 italic text-xs">Empty</p>
+                ) : (
+                  stack.units.map((nft, i) => (
+                    <p key={i} className="text-yellow-300 text-xs font-[Open_Sans]">{nft.name} ({nft.tier}-Tier)</p>
+                  ))
+                )}
               </div>
             ))}
           </div>
-        </div>
-
-        {/* Stack Panel */}
-        <div className="insert-shadow-sm bg-gray-800 p-4 rounded border mt-20">
-{/* Stack Tabs */}
-<div className="flex space-x-4 mb-4 bg-gray-900 rounded p-4">
-  {stacks.map((stack, i) =>
-    editingStackIndex === i ? (
-      <div key={i} className="flex space-x-4">
-        <input
-          className="text-white p-1 rounded"
-          value={newStackName}
-          onChange={(e) => setNewStackName(e.target.value)}
-        />
-        <button
-          onClick={() => {
-            const updatedStacks = [...stacks];
-            updatedStacks[i].name = newStackName;
-            setStacksByArmy({ ...stacksByArmy, [selectedArmy]: updatedStacks });
-            setEditingStackIndex(null);
-            saveToLocalStorage();
-          }}
-          className="bg-blue-600 px-2 py-1 rounded"
-        >
-          Save
-        </button>
-      </div>
-    ) : (
-      <button
-        key={i}
-        onClick={() => setSelectedStackIndex(i)}
-        onDoubleClick={() => {
-          setEditingStackIndex(i);
-          setNewStackName(stack.name);
-        }}
-        className={`px-4 py-2 rounded shadow-lg hover: cursor-pointer ${
-          i === selectedStackIndex ? "bg-purple-600" : "bg-gray-700"
-        }`}
-      >
-        {stack.name}
-      </button>
-      
-    )
-  )}
-</div>
-
-      {bonusMultiplier > 0 && (
-    <p className="text-green-400 font-semibold">
-      Moral Bonus: <span className="text-green-300">+{(bonusMultiplier * 100).toFixed(0)}%</span>
-    </p>
-  )}
-      <h2 className="text-xl font-semibold mb-2">Selected Stack</h2> 
-<p><strong>HP:</strong> {baseStats.hp} + <span className="text-green-400">{bonusStats.hp}</span></p>
-          <p><strong>Melee:</strong> {baseStats.melee} + <span className="text-green-400">{bonusStats.melee}</span></p>
-          <p><strong>Ranged:</strong> {baseStats.ranged} + <span className="text-green-400">{bonusStats.ranged}</span></p>
-          <p><strong>Speed:</strong> {baseStats.speed}</p>
-          <p><strong>Cost:</strong> {baseStats.cost}</p>
-          <p><strong>Power Rating:</strong> <span className="text-purple-400">{powerRating}</span></p>
-
-          <div className="mt-4 space-y-1">
-  {selectedStack.units.map((nft, i) => (
-    <div key={i} className="flex justify-between items-center text-yellow-300">
-      <p>{nft.name} ({nft.tier}-Tier)</p>
-      <button
-        onClick={() => {
-          const updatedUnits = selectedStack.units.filter((_, index) => index !== i);
-          const newStacks = [...stacks];
-          newStacks[selectedStackIndex] = { ...selectedStack, units: updatedUnits };
-          setStacksByArmy({ ...stacksByArmy, [selectedArmy]: newStacks });
-          saveToLocalStorage();
-        }}
-        className="ml-4 text-red-500 hover: cursor-pointer"
-      >
-        Remove
-      </button>
-    </div>
-  ))}
-</div>
-
-<div className="mt-4">
-  <label className="mr-2">Stance:</label>
-  <select
-    className="text-green-400 hover:cursor-pointer"
-    value={selectedStack.stance || "Melee"}
-    onChange={(e) => updateStackOption("stance", e.target.value)}
-  >
-    <option value="Melee">Melee</option>
-    <option value="Ranged">Ranged</option>
-  </select>
-
-  <label className="ml-4 mr-2">Target:</label>
-  <select
-    className="text-green-400 hover:cursor-pointer"
-    value={selectedStack.target || "Closest"}
-    onChange={(e) => updateStackOption("target", e.target.value)}
-  >
-    <option value="Closest">Closest</option>
-    <option value="Highest HP">Highest HP</option>
-    <option value="Lowest HP">Lowest HP</option>
-    <option value="Highest Attack">Highest Attack</option>
-    <option value="Highest Speed">Highest Speed</option>
-  </select>
-</div>
-
-          <div className="mt-4">
-            <p>Capacity: {totalStats.cost}/20</p>
-            <div className="h-4 w-full bg-gray-600 rounded">
-              <div
-                className="h-4 bg-green-500 rounded shadow-lg shadow-green-400/50"
-                style={{ width: `${(totalStats.cost / 20) * 100}%` }}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+    
+        </div>     
 
       {/* Tooltip (Always Visible) + Save Button */}
-      <div className="mt-4">
-        <div className="p-3 bg-gray-800 rounded text-sm space-y-1 min-h-[170px] max-w-[730px]">
+      <div className="mt-4 flex flex-col items-center justify-center">
+        <div className="p-3 bg-gray-800 rounded-xl text-sm space-y-1 min-h-[170px] min-w-[500px]">
           {hoveredNFT ? (
             <>
               <p><strong>{(hoveredNFT as NFT).name}</strong></p>
@@ -444,7 +467,7 @@ const ArmyBuilderPage = () => {
 
         <button
           onClick={saveToLocalStorage}
-          className="bg-green-600 shadow-lg shadow-green-800/50 mt-4 px-6 py-3 rounded hover: cursor-pointer"
+          className="bg-green-600 shadow-lg shadow-green-800/50 mt-4 px-6 py-2 rounded-xl border border-green-500 hover:bg-green-500 hover: cursor-pointer"
         >
           <p className="text-2xl font-bold">Save Army</p>
         </button>

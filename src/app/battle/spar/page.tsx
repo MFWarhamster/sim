@@ -308,7 +308,7 @@ export default function SparBattlePage() {
 
       <div className="container text-center mx-auto py-4">
         <h1 className="text-6xl yellow-700 font-bold text-center mb-6">SPAR</h1>
-        <button className="bg-purple-600 mb-6 border shadow-lg shadow-purple-700/50 hover:bg-purple-700 px-6 py-1 rounded text-white font-bold text-l"><Link href="/battle">Withdraw</Link></button>
+        <button className="bg-purple-600 mb-6 border border-purple-400 shadow-lg shadow-purple-700/50 px-6 py-1 rounded text-white font-bold text-l"><Link href="/battle">Withdraw</Link></button>
         {/* Battlefield Grid */}
         <div className="flex justify-center gap-2 mb-6">
           {[...Array(8)].map((_, i) => (
@@ -336,7 +336,7 @@ export default function SparBattlePage() {
   <div className="text-center mb-6">
     <button
       onClick={runBattle}
-      className="bg-red-600 border shadow-lg shadow-red-700/50 hover: cursor-pointer px-6 py-1 rounded text-white font-bold text-xl"
+      className="bg-red-600 mb-6 border border-red-500 shadow-lg shadow-red-700/50 px-6 py-1 rounded text-white font-bold text-l"
     >
       BATTLE!
     </button>
@@ -353,21 +353,21 @@ export default function SparBattlePage() {
 
 {/* Stats + Log */}
 <div className="grid md:grid-cols-3 gap-6 mt-10">
-  <div className="bg-gray-800 rounded p-4">
+  <div className="bg-gray-800 p-4 border-1 border-gray-700 rounded-2xl">
     <h3 className="text-lg font-bold mb-2">🟢 Attacker</h3>
     {renderArmyStats("attacker")}
   </div>
 
-  <div className="bg-gray-900 rounded p-4">
+  <div className="bg-gray-800 p-4 border-1 border-gray-700 rounded-2xl">
     <h2 className="text-xl font-semibold mb-2">📜 Battle Log</h2>
-    <div className="h-64 overflow-y-auto text-sm space-y-1">
+    <div className="h-100 text-white bg-gray-900 overflow-y-auto text-sm space-y-1 shadow-lg shadow-gray-900 border border-gray-800 p-1 rounded-2xl">
       {log.map((entry, idx) => (
         <div key={idx} className="text-gray-300">{entry}</div>
       ))}
     </div>
   </div>
 
-  <div className="bg-gray-800 rounded p-4">
+  <div className="bg-gray-800 p-4 rounded border-1 border-gray-700 rounded-2xl overflow-y-auto">
     <h3 className="text-lg font-bold mb-2">🔴 Defender</h3>
     {renderArmyStats("defender")}
   </div>

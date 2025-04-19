@@ -167,7 +167,7 @@ export default function ConquestBattlePage() {
         }
   
         setUnits([...attackerArmy, ...defenderUnits]);
-        setLog(["🟢 The enemy is. Click 'BATTLE!' to begin."]);
+        setLog(["🟢 The enemy is waiting. Click 'BATTLE!' to begin."]);
       });
   }, []);
 
@@ -415,21 +415,21 @@ export default function ConquestBattlePage() {
         )}
 
 <div className="grid md:grid-cols-3 gap-6 mt-10">
-  <div className="bg-gray-800 rounded p-4">
+  <div className="bg-gray-800 p-4 rounded border-1 border-gray-700 rounded-2xl overflow-y-auto">
     <h3 className="text-lg font-bold mb-2">🟢 Attacker</h3>
     {renderArmyStats("attacker")}
   </div>
 
-  <div className="bg-gray-900 rounded border border-gray-800 p-2 shadow-md shadow-black">
+  <div className="bg-gray-800 p-4 border-1 border-gray-700 rounded-2xl">
     <h2 className="text-xl font-semibold mb-2">📜 Battle Log</h2>
-    <div className="h-100 bg-gray-800 overflow-y-auto text-sm space-y-1 shadow-lg shadow-gray-900 border border-gray-800 p-1 rounded">
+    <div className="h-100 text-white bg-gray-900 overflow-y-auto text-sm space-y-1 shadow-lg shadow-gray-900 border border-gray-800 p-1 rounded-2xl">
       {log.map((entry, idx) => (
-        <div key={idx} className="text-gray-300">{entry}</div>
+        <div key={idx} className="text-white">{entry}</div>
       ))}
     </div>
   </div>
 
-  <div className="bg-gray-800 rounded p-4">
+  <div className="bg-gray-800 p-4 rounded border-1 border-gray-700 rounded-2xl overflow-y-auto">
     <h3 className="text-lg font-bold mb-2">🔴 Defender</h3>
     {renderArmyStats("defender")}
     </div>
