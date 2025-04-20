@@ -12,17 +12,11 @@ interface World {
 
 export default function ConquestPage() {
   const router = useRouter();
-  const [hasMounted, setHasMounted] = useState(false);
   const [worlds, setWorlds] = useState<World[]>([]);
   const [playerPower, setPlayerPower] = useState(0);
 
   useEffect(() => {
-    // ensure this runs only after client mount (Chrome issue fix)
-    setHasMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!hasMounted) return;
+    if (typeof window === "undefined") return;
 
     try {
       const worldsData = JSON.parse(localStorage.getItem("warhamster_worlds_data") || "[]");
@@ -43,7 +37,7 @@ export default function ConquestPage() {
     } catch (err) {
       console.error("LocalStorage parsing failed:", err);
     }
-  }, [hasMounted]);
+  }, []);  
 
   const canAttack = (worldPower: number) => Math.abs(playerPower - worldPower) <= worldPower * 0.25;
 

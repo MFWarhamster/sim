@@ -208,7 +208,7 @@ const ArmyBuilderPage = () => {
       <div className="p-6 text-white font-[Open_Sans]">
         <h1 className="text-5xl font-bold mb-2 flex justify-center text-shadow-lg/30 font-[Open_Sans]">ARMY BUILDER</h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 border border-gray-950/5 p-1 inset-ring inset-ring-gray-950/5 dark:bg-white/10 dark:inset-ring-white/10 gap-6 shadow-lg shadow-black rounded-2xl min-h-[620] max-h-620">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 border border-gray-950/5 p-1 inset-ring inset-ring-gray-950/5 dark:bg-white/10 dark:inset-ring-white/10 shadow-lg shadow-black rounded-2xl min-h-[620] max-h-620">
     
           {/* 1. Available Units */}
           <div className="bg-gray-800 border border-gray-700 rounded-2xl px-4 shadow-md shadow-black">

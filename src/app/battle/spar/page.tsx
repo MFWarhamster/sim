@@ -35,8 +35,6 @@ export default function SparBattlePage() {
   const [round, setRound] = useState(1);
   const [winner, setWinner] = useState<"attacker" | "defender" | null>(null);
   const [healedIds, setHealedIds] = useState<number[]>([]);
-  const savedArmyData = localStorage.getItem("warhamster_army_data");
-  const _armies = savedArmyData ? JSON.parse(savedArmyData).armies : [];
 
   const processAbility = (
     unit: NFT,
@@ -106,39 +104,33 @@ export default function SparBattlePage() {
     }
   };
   useEffect(() => {
+    if (typeof window === "undefined") return; // ✅ SSR-safe
+
     const armyData = localStorage.getItem("warhamster_army_data");
     if (!armyData) return alert("No saved army.");
-    const savedArmyData = localStorage.getItem("warhamster_army_data");
-    if (!savedArmyData) {
-      console.warn("No saved army data found in local storage.");
-      return;
-    }
+
     fetch("/data/warhamster_nfts_with_power_abilities_final.json")
-    .then((res) => res.json())
-    .then((nfts) => {
-      const LOCAL_STORAGE_KEY = "warhamster_army_data";
-      const savedArmyData = localStorage.getItem(LOCAL_STORAGE_KEY);
-      if (!savedArmyData) return console.warn("No saved army data found.");
-      
-      const { armies, stacksByArmy } = JSON.parse(savedArmyData);
-      const activeArmyName = armies[0];
-      const stacks = stacksByArmy[activeArmyName] || [];
-      
-      const attackerArmy: NFT[] = stacks.flatMap((stack: any) =>
-        stack.units.map((unit: any) => ({
-          ...unit,
-          position: 1,
-          side: "attacker",
-          maxHp: unit.hp,
-          attackStance: stack.stance ?? "Melee",
-          targetCommand: stack.target ?? "Closest",
-        }))
-      );       
+      .then((res) => res.json())
+      .then((nfts) => {
+        const { armies, stacksByArmy } = JSON.parse(armyData);
+        const activeArmyName = armies[0];
+        const stacks = stacksByArmy[activeArmyName] || [];
+
+        const attackerArmy: NFT[] = stacks.flatMap((stack: any) =>
+          stack.units.map((unit: any) => ({
+            ...unit,
+            position: 1,
+            side: "attacker",
+            maxHp: unit.hp,
+            attackStance: stack.stance ?? "Melee",
+            targetCommand: stack.target ?? "Closest",
+          }))
+        );
 
         const attackerIds = new Set(attackerArmy.map((u) => u.id));
         const available = nfts.filter((n: any) => !attackerIds.has(n.id));
         const defenderUnits: NFT[] = [];
-  
+
         while (defenderUnits.length < 14 && available.length > 0) {
           const idx = Math.floor(Math.random() * available.length);
           const nft = available[idx];
@@ -152,7 +144,7 @@ export default function SparBattlePage() {
           });
           available.splice(idx, 1);
         }
-  
+
         setUnits([...attackerArmy, ...defenderUnits]);
         setLog(["🟢 The enemy is waiting. Click 'BATTLE!' to begin."]);
       });

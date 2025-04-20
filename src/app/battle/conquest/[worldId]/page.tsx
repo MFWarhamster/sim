@@ -50,8 +50,7 @@ export default function ConquestBattlePage() {
   const [_round, setRound] = useState(1);
   const [winner, setWinner] = useState<"attacker" | "defender" | null>(null);
   const [healedIds, setHealedIds] = useState<number[]>([]);
-
- const processAbility = (
+  const processAbility = (
     unit: NFT,
     roundNum: number,
     allies: NFT[],
@@ -61,7 +60,7 @@ export default function ConquestBattlePage() {
   ) => {
     const ability = unit.ability;
     if (!ability || unit.hp <= 0) return;
-
+  
     const {
       trigger,
       effect,
@@ -70,7 +69,7 @@ export default function ConquestBattlePage() {
       chance = 0.25,
       name: abilityName,
     } = ability;
-
+  
     if (trigger === "onStart" && roundNum === 1) {
       if (effect === "bonusVsTier" && target) {
         unit.bonusVsTier = { tier: target, value };
@@ -81,7 +80,7 @@ export default function ConquestBattlePage() {
         log.push(`${unit.name} activates ${abilityName} and heals +${value} HP`);
       }
     }
-
+  
     if (trigger === "onChancePerRound" && Math.random() < chance) {
       if (effect === "dealAOE") {
         enemies.slice(0, 3).forEach((enemy) => (enemy.hp -= value));
@@ -100,7 +99,7 @@ export default function ConquestBattlePage() {
         log.push(`${unit.name} activates ${abilityName} and heals allies for ${value} HP`);
       }
     }
-
+  
     if (trigger === "onRandomRound") {
       if (!ability.round) {
         ability.round = Math.floor(Math.random() * 16) + 1;
@@ -110,7 +109,7 @@ export default function ConquestBattlePage() {
         log.push(`${unit.name} activates ${abilityName} randomly on round ${roundNum}!`);
       }
     }
-
+  
     if (trigger === "onDeath" && isDeath) {
       if (effect === "dealAOE") {
         enemies.slice(0, 3).forEach((e) => (e.hp -= value));
@@ -119,106 +118,49 @@ export default function ConquestBattlePage() {
     }
   };
   useEffect(() => {
-    const armyData = localStorage.getItem("warhamster_army_data");
-    if (!armyData) return alert("No saved army.");
-    const savedArmyData = localStorage.getItem("warhamster_army_data");
-    if (!savedArmyData) {
-      console.warn("No saved army data found in local storage.");
+    if (typeof window === "undefined") return;
+
+    const armyData = localStorage.getItem(LOCAL_STORAGE_ARMY);
+    const worldData = localStorage.getItem(LOCAL_STORAGE_WORLDS);
+
+    if (!armyData || !worldData) {
+      router.push("/battle/conquest");
       return;
     }
-    fetch("/data/warhamster_nfts_with_power_abilities_final.json")
-    .then((res) => res.json())
-    .then((nfts) => {
-      const LOCAL_STORAGE_KEY = "warhamster_army_data";
-      const savedArmyData = localStorage.getItem(LOCAL_STORAGE_KEY);
-      if (!savedArmyData) return console.warn("No saved army data found.");
-      
-      const { armies, stacksByArmy } = JSON.parse(savedArmyData);
-      const activeArmyName = armies[0];
-      const stacks = stacksByArmy[activeArmyName] || [];
-      
-      const attackerArmy: NFT[] = stacks.flatMap((stack: any) =>
-        stack.units.map((unit: any) => ({
-          ...unit,
-          position: 1,
-          side: "attacker",
-          maxHp: unit.hp,
-          attackStance: stack.stance ?? "Melee",
-          targetCommand: stack.target ?? "Closest",
-        }))
-      );       
 
-        const attackerIds = new Set(attackerArmy.map((u) => u.id));
-        const available = nfts.filter((n: any) => !attackerIds.has(n.id));
-        const defenderUnits: NFT[] = [];
-  
-        while (defenderUnits.length < 14 && available.length > 0) {
-          const idx = Math.floor(Math.random() * available.length);
-          const nft = available[idx];
-          defenderUnits.push({
-            ...nft,
-            position: 8,
-            side: "defender",
-            maxHp: nft.hp,
-            attackStance: "Melee",
-            targetCommand: "Closest",
-          });
-          available.splice(idx, 1);
-        }
-  
-        setUnits([...attackerArmy, ...defenderUnits]);
-        setLog(["🟢 The enemy is waiting. Click 'BATTLE!' to begin."]);
-      });
-  }, []);
+    const worlds: World[] = JSON.parse(worldData);
+    const selectedWorld = worlds.find((w) => w.id === worldId);
+    if (!selectedWorld) {
+      router.push("/battle/conquest");
+      return;
+    }
 
-  useEffect(() => {
-    const setupBattle = async () => {
-      const savedArmyData = localStorage.getItem(LOCAL_STORAGE_ARMY);
-      const savedWorldsData = localStorage.getItem(LOCAL_STORAGE_WORLDS);
+    const { armies, stacksByArmy } = JSON.parse(armyData);
+    const activeArmyName = armies[0];
+    const stacks = stacksByArmy[activeArmyName] || [];
 
-      if (!savedArmyData || !savedWorldsData) {
-        router.push("/battle/conquest");
-        return;
-      }
+    const attackerUnits: NFT[] = stacks.flatMap((stack: any) =>
+      stack.units.map((unit: any) => ({
+        ...unit,
+        position: 1,
+        side: "attacker",
+        maxHp: unit.hp,
+        attackStance: stack.stance ?? "Melee",
+        targetCommand: stack.target ?? "Closest",
+      }))
+    );
 
-      const worlds: World[] = JSON.parse(savedWorldsData);
-      const selectedWorld = worlds.find((w) => w.id === worldId);
+    const defenderUnits: NFT[] = selectedWorld.defenderArmy.map((unit: any) => ({
+      ...unit,
+      position: 8,
+      side: "defender",
+      maxHp: unit.hp,
+      attackStance: "Melee",
+      targetCommand: "Closest",
+    }));
 
-      if (!selectedWorld) {
-        router.push("/battle/conquest");
-        return;
-      }
-
-      const { armies, stacksByArmy } = JSON.parse(savedArmyData);
-      const activeArmyName = armies[0];
-      const stacks = stacksByArmy[activeArmyName] || [];
-
-      const attackerUnits: NFT[] = stacks.flatMap((stack: any, _idx: number) =>
-        stack.units.map((unit: NFT) => ({
-          ...unit,
-          position: 1,
-          side: "attacker",
-          maxHp: unit.hp,
-          attackStance: stack.stance || "Melee",
-          targetCommand: stack.target || "Closest",
-        }))
-      );
-      const defenderUnits: NFT[] = selectedWorld.defenderArmy.map(function (unit, _idx) {
-        return ({
-          ...unit,
-          position: 8,
-          side: "defender",
-          maxHp: unit.hp,
-          attackStance: "Melee",
-          targetCommand: "Closest",
-        });
-      });
-
-      setUnits([...attackerUnits, ...defenderUnits]);
-      setLog([`🟢 Ready for battle on ${selectedWorld.name}! Click 'BATTLE!' to begin.`]);
-    };
-
-    setupBattle();
+    setUnits([...attackerUnits, ...defenderUnits]);
+    setLog([`🟢 Ready for battle on ${selectedWorld.name}! Click 'BATTLE!' to begin.`]);
   }, [worldId, router]);
 
   const runBattle = async () => {

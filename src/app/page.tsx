@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="grid place-items-center mx-auto py-20">
+    <div className="grid place-items-center mx-auto p-4">
           <div className="grid place-items-center max-w-[700] text-center bg-gray-950 p-1 inset-ring inset-ring-gray-950/5 dark:bg-white/10 dark:inset-ring-white/10 p-8 rounded-xl shadow-sm shadow-black">
       <h1 className="text-5xl font-black mb-4 text-shadow-lg/30 font-[Open_Sans]">WARHAMSTER 4K</h1>
       <p className="text-lg text-gray-300 mb-6">
