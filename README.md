@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🐹 Warhamster 4K dApp (Mock Simulation)
 
-## Getting Started
+This is a mock Web3 dApp for the **Warhamster 4K** universe — a satirical, crypto-fueled NFT trading card game. This simulation allows users to:
 
-First, run the development server:
+- 🧬 **Blind Mint NFTs** from a collection of 140 randomized Warhamster cards
+- 💰 **Simulate token balances** using mock SOL and WAR4K wallets
+- 🛒 **Buy NFTs** using a 1-click mint button
+- 📦 **View all minted NFTs**
+- 💪 **Prepare for Army Builder integration**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+> ❗ This is a mock frontend for development and testing — no real wallet or blockchain integration yet.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- 🎴 Blind NFT minting at $100 per mint
+- 🔄 Wallet balance deduction in SOL or WAR4K
+- 🖼 Dynamic image loading per NFT (via metadata ID mapping)
+- 💾 Minted NFTs persist in `localStorage`
+- 🔍 Fully responsive UI with Tailwind CSS
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠 Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Next.js** 13+ (App Router)
+- **React** + **Hooks**
+- **Tailwind CSS**
+- LocalStorage for state persistence
+- Future-ready for Solana + smart contracts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📦 Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+/app /profile → player profile page (tabs: NFTs, rewards, history) /dex → mock decentralized exchange /marketplace → blind mint page (NFT Minting Station) /army-builder → (coming soon)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+public/ /nfts → 140 card images (0-001.jpg → 0-140.jpg)
+
+data/ warhamster_nfts_with_power_abilities_final.json
+
+🧠 Coming Soon
+✅ Only allow minted NFTs in Army Builder
+
+✅ Conquest Mode and Battle Flow
+
+🧠 Staking + rewards mechanics
+
+🧠 Wallet connection
+
+🧠 Solana minting integration
