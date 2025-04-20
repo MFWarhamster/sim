@@ -379,22 +379,22 @@ export default function ConquestBattlePage() {
       `}</style>
 
       <div className="container text-center mx-auto py-4">
-        <h1 className="text-6xl font-bold text-yellow-500 mb-6">⚔️ Conquest Battle</h1>
-        <button className="bg-purple-600 mb-6 border border-purple-400 shadow-lg shadow-purple-700/50 px-6 py-1 rounded text-white font-bold text-l">
-          <Link href="/battle/conquest">Withdraw</Link>
-        </button>
-
-        <div className="flex justify-center gap-2 mb-6">
+      <h1 className="text-6xl text-yellow-600 font-black font-[Open_Sans] text-center mb-6">CONQUEST</h1>
+        <button className="bg-purple-600 mb-6 border border-purple-400 shadow-lg shadow-purple-700/50 px-6 py-1 rounded font-[Open_Sans] font-black text-l"><Link href="/battle">WITHDRAW</Link></button>
+        {/* Battlefield Grid */}
+        <div className="flex justify-center gap-1 mb-6">
           {[...Array(8)].map((_, i) => (
-            <div key={i} className="w-32 min-h-[30vh] max-h-[30vh] overflow-y-auto bg-gray-800 border p-1 rounded">
-              <h2 className="text-sm mb-1">Grid {i + 1}</h2>
-              {units.filter(u => u.position === i + 1 && u.hp > 0).map((u) => (
-                <div
-                  key={u.id}
-                  className={`text-xs p-1 mb-1 rounded ${u.side === "attacker" ? "bg-green-600" : "bg-red-600"} ${
-                    healedIds.includes(u.id) ? "heal-glow" : ""
-                  }`}
-                >
+            <div key={i} className="w-32 min-h-[30vh] max-h-[30vh] p-2 overflow-y-auto inset-ring inset-ring-gray-950/5 dark:bg-white/10 dark:inset-ring-white/10 shadow-lg shadow-black bg-linear-to-t from-gray-900 to-gray-800">
+              <h2 className="text-sm text-center mb-1 bg-gray-900 rounded-t-lg">Grid {i + 1}</h2>
+              {units
+                .filter((u) => u.position === i + 1 && u.hp > 0)
+                .map((u) => (
+                  <div
+                    key={u.id}
+                    className={`text-xs p-1 mb-1 rounded ${
+                      u.side === "attacker" ? "bg-green-600" : "bg-red-600"
+                    } ${healedIds.includes(u.id) ? "heal-glow" : ""}`}
+                  >
                   <strong>{u.name}</strong><br />
                   HP: {u.hp}/{u.maxHp}
                 </div>
@@ -403,18 +403,19 @@ export default function ConquestBattlePage() {
           ))}
         </div>
         {!winner && (
-          <button className="bg-red-600 mb-6 border border-red-500 shadow-lg shadow-red-700/50 px-6 py-1 rounded text-white font-bold text-l" onClick={runBattle}>
+          <button className="bg-red-600 mb-6 border border-red-500 shadow-lg shadow-red-700/50 px-6 py-1 rounded text-white font-bold text-l hover:bg-red-500 hover: cursor-pointer" onClick={runBattle}>
             ⚔️ BATTLE!
           </button>
         )}
 
         {winner && (
-          <button className="bg-green-600 mb-6 border border-green-500 shadow-lg shadow-green-700/50 px-6 py-1 rounded text-white font-bold text-l" onClick={returnToConquest}>
+          <button className="bg-green-600 mb-6 border border-green-500 shadow-lg shadow-green-700/50 px-6 py-1 rounded text-white font-bold text-l hover:bg-green-500 hover: cursor-pointer" onClick={returnToConquest}>
             Return to Conquest
           </button>
         )}
 
-<div className="grid md:grid-cols-3 gap-6 mt-10">
+{/* Stats + Log */}
+<div className="grid md:grid-cols-3 border border-gray-950/5 p-1 inset-ring inset-ring-gray-950/5 dark:bg-gray-900 dark:inset-ring-white/10 gap-6 shadow-lg shadow-black rounded-2xl">
   <div className="bg-gray-800 p-4 rounded border-1 border-gray-700 rounded-2xl overflow-y-auto">
     <h3 className="text-lg font-bold mb-2">🟢 Attacker</h3>
     {renderArmyStats("attacker")}

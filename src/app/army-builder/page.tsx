@@ -46,7 +46,8 @@ const ArmyBuilderPage = () => {
   const selectedArmy = armies[selectedArmyIndex];
   const allArmyUnits = stacksByArmy[selectedArmy]?.flatMap((stack) => stack.units) || [];
   const stacks = stacksByArmy[selectedArmy] || [];
-  const selectedStack = stacks[selectedStackIndex] || null;  
+  const selectedStack = stacks[selectedStackIndex] || null;
+  if (!selectedStack) return null;  
   const _addNewStack = ()  => {  // Placeholder for future implementation
     setStacksByArmy((prevStacksByArmy) => {
       const currentStacks: Stack[] = prevStacksByArmy[selectedArmy] || [];
@@ -69,8 +70,11 @@ const ArmyBuilderPage = () => {
       };
     });
   }
-  
 
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ armies, stacksByArmy }));
+  }, [armies, stacksByArmy]);
+  
   useEffect(() => {
     const loadNFTs = async () => {
       const res = await fetch("/data/warhamster_nfts_with_power_abilities_final.json");
@@ -201,21 +205,21 @@ const ArmyBuilderPage = () => {
     );
 
     return (
-      <div className="p-6 text-white">
+      <div className="p-6 text-white font-[Open_Sans]">
         <h1 className="text-5xl font-bold mb-2 flex justify-center text-shadow-lg/30 font-[Open_Sans]">ARMY BUILDER</h1>
-    
-        <div className="grid grid-cols-1 lg:grid-cols-3 border border-gray-800 gap-6 shadow-lg shadow-black bg-gray-900 rounded-2xl p-4">
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 border border-gray-950/5 p-1 inset-ring inset-ring-gray-950/5 dark:bg-white/10 dark:inset-ring-white/10 gap-6 shadow-lg shadow-black rounded-2xl min-h-[620] max-h-620">
     
           {/* 1. Available Units */}
-          <div className="bg-gray-800 border border-gray-700 rounded-2xl px-4">
+          <div className="bg-gray-800 border border-gray-700 rounded-2xl px-4 shadow-md shadow-black">
             <h2 className="text-xl flex justify-center font-semibold p-4 text-shadow-lg/30 font-[Open_Sans]">AVAILABLE NFT</h2>
-            <div className="flex space-x-3 mb-2">
+            <div className="flex space-x-2 mb-2 flex justify-center rounded-xl p-1 inset-ring inset-ring-black dark:bg-gray-900 dark:inset-ring-white/10 text-white font-[Open_Sans]">
               {Object.keys(filters).map((key) => (
                 <button
                   key={key}
                   onClick={() => toggleFilter(key as keyof typeof filters)}
                   className={`px-5 py-1 shadow-lg rounded ${
-                    filters[key as keyof typeof filters] ? "font-[Open_Sans] bg-green-600 hover:bg-green-500 hover: cursor-pointer" : "bg-gray-600 hover:bg-gray-500 hover: cursor-pointer"
+                    filters[key as keyof typeof filters] ? "bg-green-700 p-2 px-4 inset-ring inset-ring-green-600 shadow-sm shadow-black hover:shadow-lg hover:shadow-green-500 hover:bg-green-300" : "bg-gray-600 hover:bg-gray-500 hover: cursor-pointer"
                   }`}
                 >
                   {key}
@@ -223,11 +227,11 @@ const ArmyBuilderPage = () => {
               ))}
             </div>
     
-            <div className="bg-gray-700 space-y-2 max-h-[480px] overflow-y-auto rounded px-2 mb-4">
+            <div className="bg-gray-700 space-y-2 max-h-[480px] overflow-y-auto rounded px-2 mb-4 border border-gray-900 insert-shadow-sm">
               {filteredNFTs.map((nft) => (
                 <div
                   key={nft.id}
-                  className="relative bg-gray-900 p-2 group shadow-sm rounded shadow-black mt-2 mb-2"
+                  className="relative bg-gray-900 p-2 group border-t-1 border-gray-500 shadow-sm shadow-gray-800 mt-2 mb-2 rounded"
                   onMouseEnter={() => setHoveredNFT(nft)}
                   onMouseLeave={() => setHoveredNFT(null)}
                 >
@@ -235,7 +239,7 @@ const ArmyBuilderPage = () => {
                   <div className="text-xs">Tier {nft.tier} | Cost {nft.cost} | {nft.legion}</div>
                   <button
                     onClick={() => addUnitToStack(nft)}
-                    className="font-[Open_Sans] absolute top-2 right-2 bg-green-600 px-2 py-1 text-xs rounded hover:bg-green-800 cursor-pointer"
+                    className="font-[Open_Sans] absolute top-2 right-2 rounded bg-green-700 px-2 inset-ring inset-ring-green-600 shadow-sm shadow-black hover:shadow-md hover:shadow-green-500 hover:bg-green-300 cursor-pointer"
                   >
                     Add
                   </button>
@@ -245,12 +249,12 @@ const ArmyBuilderPage = () => {
           </div>
     
           {/* 2. Stack Builder */}
-          <div className="bg-gray-800 p-4 border border-gray-700 rounded-2xl">
+          <div className="bg-gray-800 p-4 border border-gray-700 rounded-2xl shadow-md shadow-black">
             <h2 className="text-xl font-semibold mb-4 flex justify-center text-shadow-lg/30 font-[Open_Sans]">STACK BUILDER</h2>
-            <div className="flex space-x-4 mb-4 justify-center">
+            <div className="flex space-x-2 mb-2 flex justify-center rounded-xl p-1 inset-ring inset-ring-black dark:bg-gray-900 dark:inset-ring-white/10 text-white font-[Open_Sans]">
               {stacks.map((stack, i) =>
                 editingStackIndex === i ? (
-                  <div key={i} className="flex space-x-4">
+                  <div key={i} className="flex space-x-">
                     <input
                       className="text-white p-1 rounded"
                       value={newStackName}
@@ -278,7 +282,7 @@ const ArmyBuilderPage = () => {
                       setNewStackName(stack.name);
                     }}
                     className={`px-4 py-2 shadow-lg rounded ${
-                      i === selectedStackIndex ? "font-[Open_Sans] bg-purple-600 border border-purple-600 hover:bg-purple-500 hover: cursor-pointer" : "bg-gray-700 hover:bg-gray-600 hover: cursor-pointer border border-gray-600"
+                      i === selectedStackIndex ? "bg-green-700 p-1 px-6 inset-ring inset-ring-green-600 shadow-sm shadow-green-600 rounded-l hover:bg-green-600" : "bg-gray-700 hover:shadow-lg hover:shadow-green-500 hover:bg-green-400 hover: cursor-pointer"
                     }`}
                   >
                     {stack.name}
@@ -347,9 +351,9 @@ const ArmyBuilderPage = () => {
     
             <div className="mt-4 font-[Open_Sans]">
               <p>Capacity: {totalStats.cost}/20</p>
-              <div className="h-4 w-full bg-gray-600 rounded">
+              <div className="mt-2 h-6 rounded-xl w-full inset-ring inset-ring-gray-500/50 dark:bg-gray-950/50 dark:inset-ring-gray-500/30">
                 <div
-                  className="h-4 bg-green-500 rounded shadow-lg shadow-green-400/50"
+                  className="h-6 bg-green-500 rounded-xl shadow-lg shadow-green-400/50"
                   style={{ width: `${(totalStats.cost / 20) * 100}%` }}
                 />
               </div>
@@ -357,7 +361,7 @@ const ArmyBuilderPage = () => {
           </div>
     
           {/* 3. Army Review */}
-          <div className="bg-gray-800 max-h-[600px] p-4 border border-gray-700 rounded-2xl space-y-4">
+          <div className="bg-gray-800 max-h-[620px] p-4 border border-gray-700 rounded-2xl space-y-4 shadow-md shadow-black">
             <h1 className="text-xl font-bold mb-2 flex justify-center text-shadow-lg/30 font-[Open_Sans]">ARMY REVIEW</h1>
     
             {/* Army Tabs */}
@@ -447,7 +451,7 @@ const ArmyBuilderPage = () => {
         </div>     
 
       {/* Tooltip (Always Visible) + Save Button */}
-      <div className="mt-4 flex flex-col items-center justify-center">
+      <div className="mt-4 flex flex-col gap-2 flex justify-center items-center rounded-xl bg-gray-950/5 p-1 inset-ring inset-ring-gray-950/5 dark:bg-white/10 dark:inset-ring-white/10 p-8 text-white font-[Open_Sans] max-w-screen shadow-lg shadow-black">
         <div className="p-3 bg-gray-800 rounded-xl text-sm space-y-1 min-h-[170px] min-w-[500px]">
           {hoveredNFT ? (
             <>
@@ -467,9 +471,9 @@ const ArmyBuilderPage = () => {
 
         <button
           onClick={saveToLocalStorage}
-          className="bg-green-600 shadow-lg shadow-green-800/50 mt-4 px-6 py-2 rounded-xl border border-green-500 hover:bg-green-500 hover: cursor-pointer"
+          className="p-1 px-8 inset-ring inset-ring-gray-950/5 dark:bg-green-600 dark:inset-ring-green-400 rounded-2xl shadow-md shadow-green-800 hover:shadow-lg hover:shadow-green-500 hover:bg-green-300 hover:inset-shadow-sm hover:inset-shadow-lime-200 hover: cursor-pointer"
         >
-          <p className="text-2xl font-bold">Save Army</p>
+          <p className="text-2xl font-black font-[Open_Sans]">SAVE</p>
         </button>
       </div>
     </div>

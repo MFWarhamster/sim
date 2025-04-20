@@ -12,35 +12,49 @@ interface World {
 
 export default function ConquestPage() {
   const router = useRouter();
+  const [hasMounted, setHasMounted] = useState(false);
   const [worlds, setWorlds] = useState<World[]>([]);
   const [playerPower, setPlayerPower] = useState(0);
 
   useEffect(() => {
-    const worldsData = JSON.parse(localStorage.getItem("warhamster_worlds_data") || "[]");
-    const armyData = JSON.parse(localStorage.getItem("warhamster_army_data") || "{}");
-
-    if (armyData.armies && armyData.stacksByArmy) {
-      const activeArmyName = armyData.armies[0];
-      const playerStacks = armyData.stacksByArmy[activeArmyName] || [];
-
-      const totalPlayerPower = playerStacks.flatMap((stack: any) => stack.units)
-        .reduce((total: number, unit: any) => total + (Number(unit.power) || 0), 0);
-
-      setPlayerPower(totalPlayerPower);
-    }
-
-    setWorlds(worldsData);
+    // ensure this runs only after client mount (Chrome issue fix)
+    setHasMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!hasMounted) return;
+
+    try {
+      const worldsData = JSON.parse(localStorage.getItem("warhamster_worlds_data") || "[]");
+      const armyData = JSON.parse(localStorage.getItem("warhamster_army_data") || "{}");
+
+      if (armyData.armies?.length && armyData.stacksByArmy) {
+        const activeArmyName = armyData.armies[0];
+        const playerStacks = armyData.stacksByArmy[activeArmyName] || [];
+
+        const totalPlayerPower = playerStacks
+          .flatMap((stack: any) => stack.units || [])
+          .reduce((total: number, unit: any) => total + (Number(unit.power) || 0), 0);
+
+        setPlayerPower(totalPlayerPower);
+      }
+
+      setWorlds(worldsData);
+    } catch (err) {
+      console.error("LocalStorage parsing failed:", err);
+    }
+  }, [hasMounted]);
 
   const canAttack = (worldPower: number) => Math.abs(playerPower - worldPower) <= worldPower * 0.25;
 
   return (
-    <div className="p-6 text-white">
-      <h1 className="text-3xl font-bold mb-4">🌎 Conquest Mode</h1>
-      <div>It&apos;sYour Army's Power Rating: {playerPower}</div>
+    <div className="p-6 text-white flex justify-center">
+  <div className="flex flex-col gap-2 flex justify-center rounded-xl bg-gray-950/5 p-1 inset-ring inset-ring-gray-950/5 dark:bg-white/10 dark:inset-ring-white/10 p-8 text-white font-[Open_Sans] max-w-[800] shadow-lg shadow-black">
+      <h1 className="text-3xl font-black mb-4 flex justify-center font-[Open_Sans]">CONQUEST</h1>
+      <div className="text-white flex justify-center">Your Army's Power Rating: {playerPower}</div>
       <ul>
         {worlds.map(world => (
-          <li key={world.id} className="p-2 mb-2 border rounded bg-gray-800">
+          <li key={world.id} className="grid md:grid-cols-3 border border-gray-950/5 inset-ring inset-ring-gray-950/5 dark:bg-gray-900 dark:inset-ring-white/10 gap-4 shadow-lg shadow-black rounded-2xl p-3 mt-2">
             <h2>{world.name}</h2>
             <p>Owner: {world.owner}</p>
             <p>Power Rating: {world.powerRating}</p>
@@ -59,6 +73,6 @@ export default function ConquestPage() {
         ))}
       </ul>
     </div>
+    </div>
   );
 }
-
